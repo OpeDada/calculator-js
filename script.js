@@ -1,3 +1,4 @@
+// note: previous operand moves up and current operand is always the newest typed
 class Calculator {
   // The constructor takes all the inputs and functions for the calculator
   // It will take the previous and current operand text element
@@ -21,21 +22,50 @@ class Calculator {
   // every time a user clicks a number to add to the screen
   // the argument is the particular number the user selected
   appendNumber(number) {
-    this.currentOperand = number;
+    // we want to allow user to add dot(.) only once
+    if (number === "." && this.currentOperand.includes(".")) return; // stop the fnc from running any further
+    // we want to update the current operand by appending numbers to each other, e.g a user clicks 1,
+    // this is the current currentOperand, if he clicks 1 again,
+    // this will append and become 11, if we dont convert it to String,
+    // it will become 2 instead of 11.
+    this.currentOperand = this.currentOperand.toString() + number.toString();
   }
 
   // every time a user clicks any of the data operation buttons
   // the argument is the particular operation the user selected
-  chooseOperation(operation) {}
+  chooseOperation(operation) {
+    if (this.currentOperand === "") return;
+    // if we want to do a second computation(e.g 5 + 4 * 2), once the user clicks on *, it should have added 5 + 4
+    if (this.previousOperand !== "") {
+      this.compute();
+    }
+    // sets the operation the calc will work with
+    this.operation = operation;
+    // when we click an operation, we are done typing current number, we want to type a new number
+    this.previousOperand = this.currentOperand;
+    // after clicking he operation, clear out the current operand so we can type a new one
+    this.currentOperand = "";
+  }
 
   // this is going to take our values inside of the calculator
   // and compute a single value for what we need to display on the calculator
-  compute() {}
+  compute() {
+    let computation; // this variable is going to be the result of our compute fnc
+    // convert operands to numbers
+    const prev = parseFloat(this.previousOperand);
+    const current = parseFloat(this.currentOperand);
+    if (isNaN(prev) || isNaN(current)) return;
+    // switch allows you to do a bunch of if statements on a single object(this.operation)
+    switch (this.operation) {
+      case "+": // all the code in this case will be executed when this.operation = +
+    }
+  }
 
   // this is going to update the values inside our output
   updateDisplay() {
     // set the text of the value in the output
     this.currentOperandTextElement.innerText = this.currentOperand;
+    this.previousOperandTextElement.innerText = this.previousOperand;
   }
 }
 
@@ -64,4 +94,16 @@ numberButtons.forEach((button) => {
     calculator.appendNumber(button.innerText);
     calculator.updateDisplay(); // the display values will be updated every time a button is clicked.
   });
+});
+
+operationButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    calculator.chooseOperation(button.innerText);
+    calculator.updateDisplay(); // the display values will be updated every time a button is clicked.
+  });
+});
+
+equalsButton.addEventListener("click", (button) => {
+  calculator.compute(); // get the computed value
+  calculator.updateDisplay();
 });
