@@ -17,7 +17,9 @@ class Calculator {
     this.operation = undefined; // since they dont have any operation selected if we clear things
   }
 
-  delete() {}
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1); // remove the last value of the string
+  }
 
   // every time a user clicks a number to add to the screen
   // the argument is the particular number the user selected
@@ -127,5 +129,10 @@ equalsButton.addEventListener("click", (button) => {
 
 allClearButton.addEventListener("click", (button) => {
   calculator.clear();
+  calculator.updateDisplay();
+});
+
+deleteButton.addEventListener("click", (button) => {
+  calculator.delete();
   calculator.updateDisplay();
 });
