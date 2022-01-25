@@ -84,7 +84,10 @@ class Calculator {
   updateDisplay() {
     // set the text of the value in the output
     this.currentOperandTextElement.innerText = this.currentOperand;
-    this.previousOperandTextElement.innerText = this.previousOperand;
+    // to display the operation figure beside the previous operand
+    if (this.operation != null) {
+      this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`;
+    }
   }
 }
 
