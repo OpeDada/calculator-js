@@ -115,6 +115,8 @@ class Calculator {
       this.previousOperandTextElement.innerText = `${this.getDisplayNumber(
         this.previousOperand
       )} ${this.operation}`;
+    } else {
+      this.previousOperandTextElement.innerText = "";
     }
   }
 }
