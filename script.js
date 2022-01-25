@@ -80,13 +80,41 @@ class Calculator {
     this.previousOperand = "";
   }
 
+  // delimiting values with commas
+  getDisplayNumber(number) {
+    const stringNumber = number.toString();
+    // the stringNumber takes our string and turns it into an array
+    // the first number is before the dot[0] and the second number is after the dot[1]
+    const integerDigits = parseFloat(stringNumber.split(".")[0]);
+    const decimalDigits = stringNumber.split(".")[1];
+    let integerDisplay;
+    // if integerDigits is a not a number
+    if (isNaN(integerDigits)) {
+      integerDisplay = "";
+    } else {
+      integerDisplay = integerDigits.toLocaleString("en", {
+        maximumFractionDigits: 0,
+      });
+    }
+    // if the user entered a digit and enters a period after
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`;
+    } else {
+      return integerDisplay;
+    }
+  }
+
   // this is going to update the values inside our output
   updateDisplay() {
     // set the text of the value in the output
-    this.currentOperandTextElement.innerText = this.currentOperand;
+    this.currentOperandTextElement.innerText = this.getDisplayNumber(
+      this.currentOperand
+    );
     // to display the operation figure beside the previous operand
     if (this.operation != null) {
-      this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`;
+      this.previousOperandTextElement.innerText = `${this.getDisplayNumber(
+        this.previousOperand
+      )} ${this.operation}`;
     }
   }
 }
