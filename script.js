@@ -57,8 +57,25 @@ class Calculator {
     if (isNaN(prev) || isNaN(current)) return;
     // switch allows you to do a bunch of if statements on a single object(this.operation)
     switch (this.operation) {
-      case "+": // all the code in this case will be executed when this.operation = +
+      case "+": // all the code in this case will be executed when this.operation is +
+        computation = prev + current;
+        break; // means dont follow any other case statements.
+      case "-":
+        computation = prev - current;
+        break;
+      case "*":
+        computation = prev * current;
+        break;
+      case "÷":
+        computation = prev / current;
+        break;
+      // default is like else
+      default:
+        return;
     }
+    this.currentOperand = computation;
+    this.operation = undefined;
+    this.previousOperand = "";
   }
 
   // this is going to update the values inside our output
@@ -105,5 +122,10 @@ operationButtons.forEach((button) => {
 
 equalsButton.addEventListener("click", (button) => {
   calculator.compute(); // get the computed value
+  calculator.updateDisplay();
+});
+
+allClearButton.addEventListener("click", (button) => {
+  calculator.clear();
   calculator.updateDisplay();
 });
